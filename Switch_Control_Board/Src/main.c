@@ -66,42 +66,29 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-uint8_t xbee_transmit_request(uint8_t* buffer, uint8_t* address, uint8_t* data, uint8_t data_len)
-{
-  buffer[0] = 0x7E;
-  buffer[1] = 0x00;
-  uint8_t length = 0x0E + data_len;
-  buffer[2] = length;
-  buffer[3] = 0x10; // Transmit request
-  buffer[4] = 0x01; // Frame ID
-
-  // Copy destination address
-  for(uint8_t i = 0;i < 8;i++)
-  {
-    buffer[i + 5] = address[i];
-  }
-
-  buffer[13] = 0xFF;
-  buffer[14] = 0xFE;
-
-  buffer[15] = 0x00; // Broadcast radius
-  buffer[16] = 0x00; // Options
-
-  // Copy payload data
-  for(uint8_t i = 0; i < data_len; i++)
-  {
-    buffer[i + 17] = data[i];
-  }
-
-  uint16_t checksum = 0;
-  for(uint16_t i = 3;i < (data_len + 17);i++)
-  {
-    checksum = checksum + buffer[i];
-  }
-
-  buffer[data_len + 17] = (0xFF - (checksum & 0x00FF));
-
-  return (data_len + 18);
+uint8_t run_switch(uint8_t instruct){
+    if(instruct == 0x01){ //switch 0 to state 1
+        TIM1->CCR1 = 1175;
+        return 1;
+    }
+    else if(instruct == 0x00){
+        TIM1->CCR1 = 1350;
+        return 1;
+    }
+    else if(instruct == 0x03){
+        TIM1->CCR2 = 1175;
+        return 1;
+    }
+    else if(instruct == 0x02){
+        TIM1->CCR2 = 1350;
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+uint8_t recieve_command(void){
+    
 }
 /* USER CODE END PFP */
 
