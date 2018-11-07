@@ -1,0 +1,41 @@
+packet = [];
+checksum = 0;
+
+// Start delimiter
+packet[0] = 0x7E;
+
+// Length
+packet[1] = 0x00;
+packet[2] = 0x0F;
+
+// Frame type
+packet[3] = 0x10;
+
+// Frame ID
+packet[4] = 0x01;
+
+// 64 bit address
+for(x in range 5, 12){
+	packet[x] = address[x-5];
+}
+
+// 16 bit address
+packet[13] = 0xFF;
+packet[14] = 0xFE;
+
+// broadcast radius
+packet[15] = 0x00;
+
+// options
+packet[16] = 0x00;
+
+// Data
+packet[17] = data;
+
+// Checksum
+for (x in range 3, 17){
+checksum += packet[x];
+}
+packet[18] = checksum;
+
+return packet;
