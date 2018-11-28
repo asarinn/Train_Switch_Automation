@@ -53,8 +53,6 @@
 #define B1_GPIO_Port GPIOC
 #define LED1_Pin GPIO_PIN_5
 #define LED1_GPIO_Port GPIOA
-#define XBin_Pin GPIO_PIN_5
-#define XBin_GPIO_Port GPIOC
 #define SW1_Pin GPIO_PIN_12
 #define SW1_GPIO_Port GPIOB
 #define SW2_Pin GPIO_PIN_13

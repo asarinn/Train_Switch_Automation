@@ -48,7 +48,7 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>..\..\..\GitHub\Train_Switch_Automation\Switch_Control_Board\MDK-ARM\Senior Design\</OutputDirectory>
+          <OutputDirectory>Senior Design\</OutputDirectory>
           <OutputName>Senior Design</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F072xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;        ../Drivers/STM32F0xx_HAL_Driver/Inc;        ../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;        ../Drivers/CMSIS/Device/ST/STM32F0xx/Include;        ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Inc;  ../Drivers/STM32F0xx_HAL_Driver/Inc;  ../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;  ../Drivers/CMSIS/Device/ST/STM32F0xx/Include;  ../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -392,16 +392,6 @@
         <Group>
           <GroupName>Application/User</GroupName>
           <Files>
-            <File>
-              <FileName>Switches.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Switches.h</FilePath>
-            </File>
-            <File>
-              <FileName>Switches.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Switches.c</FilePath>
-            </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>

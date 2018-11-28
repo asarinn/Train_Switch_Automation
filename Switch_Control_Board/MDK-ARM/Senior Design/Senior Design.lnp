@@ -3,7 +3,6 @@
 "senior design\main.o"
 "senior design\stm32f0xx_it.o"
 "senior design\stm32f0xx_hal_msp.o"
-"senior design\switches.o"
 "senior design\stm32f0xx_hal_tim.o"
 "senior design\stm32f0xx_hal_tim_ex.o"
 "senior design\stm32f0xx_hal_uart.o"
