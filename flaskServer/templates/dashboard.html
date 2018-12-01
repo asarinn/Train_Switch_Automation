@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Dashboard <small> Welcome {{session.username}}</small></h1>
+  <a class="btn btn-success" href="/add_article"> Add Switch</a>
+  <hr>
+  <table class="table table-striped">
+    <tr>
+      <th>ID</th>
+      <th>Address</th>
+      <th>Count</th>
+      <th></th>
+      <th></th>
+    </tr>
+    {% for hub in hubs %}
+      <tr>
+        <td>{{hub.id}}</td>
+        <td>{{hub.address}}</td>
+        <td>{{hub.switch_count}}</td>
+        <td><a href="edit_article/{{hub.id}}" class="btn btn-default pull-right">Edit</a></td>
+        <td>
+          <form action="{{url_for('delete_article', id=hub.id)}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+        <td>
+          <form action="{{url_for('switch_left', address=hub.address)}}" method="post">
+            <input type="submit" value="Left" class="btn btn-primary">
+          </form>
+        </td>
+        <td>
+          <form action="{{url_for('switch_right', address=hub.address)}}" method="post">
+            <input type="submit" value="Right" class="btn btn-secondary">
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
