@@ -52,7 +52,7 @@ def send_packet(address, data):
 
     # Setup serial port
     ser = serial.Serial(
-        port='/dev/ttyUSB0',
+        port='COM3',
         baudrate=9600,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
@@ -61,6 +61,6 @@ def send_packet(address, data):
     )
 
     # Send packet
-    while 1:
-        ser.write(packet)
-        time.sleep(1)
+    #while 1:
+    ser.write(packet)
+        #time.sleep(1)

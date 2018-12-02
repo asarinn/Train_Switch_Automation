@@ -26,13 +26,13 @@
           </form>
         </td>
         <td>
-          <form action="{{url_for('switch_left', address=hub.address)}}" method="post">
-            <input type="submit" value="Left" class="btn btn-primary">
+          <form action="{{url_for('switch_in', address=hub.address, switch_num=hub.switch_num)}}" method="post">
+            <input type="submit" value="In" class="btn btn-primary">
           </form>
         </td>
         <td>
-          <form action="{{url_for('switch_right', address=hub.address)}}" method="post">
-            <input type="submit" value="Right" class="btn btn-primary">
+          <form action="{{url_for('switch_out', address=hub.address, switch_num=hub.switch_num)}}" method="post">
+            <input type="submit" value="Out" class="btn btn-primary">
           </form>
         </td>
       </tr>

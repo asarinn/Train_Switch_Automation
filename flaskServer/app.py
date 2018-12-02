@@ -147,8 +147,8 @@ def dashboard():
 
 # Switch Form Class
 class SwitchForm(Form):
-    address = StringField('Address', [validators.Length(min=1, max=16)])
-    count = StringField('Switch Number')
+    address = StringField('Address', [validators.Length(min=16, max=16)])
+    count = StringField('Switch Number', [validators.Length(min=1, max=2)])
 
 # Hub form class
 class HubForm(Form):
@@ -270,25 +270,39 @@ def delete_switch(id):
 
     return redirect(url_for('dashboard'))
 
-# Switch Left
-@app.route('/switch_left/<string:address>', methods=['POST'])
+# Switch In
+@app.route('/switch_in/<string:address>/<int:switch_num>', methods=['POST'])
 @is_logged_in
-def switch_left(address):
+def switch_in(address, switch_num):
     addressList = bytes.fromhex(address)
-    send_packet(addressList, 0x01)
-    flash('Switched Left', 'success')
+
+    # make data
+    switch_num = switch_num - 1
+    newVal = switch_num << 1
+    dataSend = 1 + newVal
+    print (address, dataSend, sep='<-')
+
+    send_packet(addressList, dataSend)
+    flash('Switched In', 'success')
     return redirect(url_for('dashboard'))
 
 # Switch Right
-@app.route('/switch_right/<string:address>', methods=['POST'])
+@app.route('/switch_out/<string:address>/<int:switch_num>', methods=['POST'])
 @is_logged_in
-def switch_right(address):
+def switch_out(address, switch_num):
     addressList = bytes.fromhex(address)
-    send_packet(addressList, 0x01)
-    flash('Switched Right', 'success')
+
+    # make data
+    switch_num = switch_num - 1
+    newVal = switch_num << 1
+    dataSend = 0 + newVal
+    print(address, dataSend, sep='<-')
+
+    send_packet(addressList, dataSend)
+    flash('Switched Out', 'success')
     return redirect(url_for('dashboard'))
 
 
 if __name__ == '__main__':
     app.secret_key='secret123'
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
