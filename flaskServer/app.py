@@ -1,9 +1,9 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
-#from data import Articles
 from flask_mysqldb import MySQL
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
+from sendPacket import send_packet
 
 app = Flask(__name__)
 
@@ -151,10 +151,7 @@ def dashboard():
     # Get articles
     #result = cur.execute("SELECT * FROM articles")
     # Show articles only from the user logged in 
-    result = cur.execute("SELECT * FROM articles WHERE author = %s", [session['username']])
     result2 = hubCur.execute("SELECT * FROM hubs")
-
-    articles = cur.fetchall()
     hubs = hubCur.fetchall()
 
     if result2 > 0:
@@ -191,7 +188,7 @@ def add_article():
         #Close connection
         cur.close()
 
-        flash('Article Created', 'success')
+        flash('Switch Created', 'success')
 
         return redirect(url_for('dashboard'))
 
@@ -223,7 +220,7 @@ def edit_article(id):
 
         # Create Cursor
         cur = mysql.connection.cursor()
-        app.logger.info(address)
+        #app.logger.info(address)
         # Execute
         cur.execute ("UPDATE articles SET address=%s, switch_count=%s WHERE id=%s",(address, count, id))
         # Commit to DB
@@ -262,16 +259,18 @@ def delete_article(id):
 @app.route('/switch_left/<string:address>', methods=['POST'])
 @is_logged_in
 def switch_left(address):
+    addressList = bytes.fromhex(address)
+    send_packet(addressList, 0x01)
     flash('Switched Left', 'success')
-
     return redirect(url_for('dashboard'))
 
 # Switch Right
 @app.route('/switch_right/<string:address>', methods=['POST'])
 @is_logged_in
 def switch_right(address):
+    addressList = bytes.fromhex(address)
+    send_packet(addressList, 0x01)
     flash('Switched Right', 'success')
-
     return redirect(url_for('dashboard'))
 
 
