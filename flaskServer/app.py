@@ -16,8 +16,6 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # init MYSQL
 mysql = MySQL(app)
 
-#Articles = Articles()
-
 # Index
 @app.route('/')
 def index():
@@ -28,19 +26,6 @@ def index():
 @app.route('/about')
 def about():
     return render_template('about.html')
-
-#Single Article
-@app.route('/article/<string:id>/')
-def article(id):
-    # Create cursor
-    cur = mysql.connection.cursor()
-
-    # Get article
-    result = cur.execute("SELECT * FROM articles WHERE id = %s", [id])
-
-    article = cur.fetchone()
-
-    return render_template('article.html', article=article)
 
 
 # Register Form Class
@@ -148,30 +133,33 @@ def dashboard():
     cur = mysql.connection.cursor()
     hubCur = mysql.connection.cursor()
 
-    # Get articles
-    #result = cur.execute("SELECT * FROM articles")
-    # Show articles only from the user logged in 
+    # Show switches only from the user logged in 
     result2 = hubCur.execute("SELECT * FROM hubs")
     hubs = hubCur.fetchall()
 
     if result2 > 0:
         return render_template('dashboard.html', hubs=hubs)
     else:
-        msg = 'No Articles Found'
+        msg = 'No Switches Found'
         return render_template('dashboard.html', msg=msg)
     # Close connection
     cur.close()
 
-# Article Form Class
-class ArticleForm(Form):
+# Switch Form Class
+class SwitchForm(Form):
     address = StringField('Address', [validators.Length(min=1, max=16)])
-    count = StringField('Count', [validators.Length(min=1)])
+    count = StringField('Switch Number')
 
-# Add Article
-@app.route('/add_article', methods=['GET', 'POST'])
+# Hub form class
+class HubForm(Form):
+    address = StringField('Address', [validators.Length(min=1, max=16)])
+    count = StringField('Switch Total', [validators.Length(min=1, max=2)])
+
+# Add Switch
+@app.route('/add_switch', methods=['GET', 'POST'])
 @is_logged_in
-def add_article():
-    form = ArticleForm(request.form)
+def add_switch():
+    form = SwitchForm(request.form)
     if request.method == 'POST' and form.validate():
         address = form.address.data
         count = form.count.data
@@ -180,7 +168,7 @@ def add_article():
         cur = mysql.connection.cursor()
 
         # Execute
-        cur.execute("INSERT INTO hubs(address, switch_count) VALUES(%s, %s)",(address, count))
+        cur.execute("INSERT INTO hubs(address, switch_num) VALUES(%s, %s)",(address, count))
 
         # Commit to DB
         mysql.connection.commit()
@@ -192,53 +180,80 @@ def add_article():
 
         return redirect(url_for('dashboard'))
 
-    return render_template('add_article.html', form=form)
+    return render_template('add_switch.html', form=form)
 
-
-# Edit Article
-@app.route('/edit_article/<string:id>', methods=['GET', 'POST'])
+# Add Hub
+@app.route('/add_hub', methods=['GET', 'POST'])
 @is_logged_in
-def edit_article(id):
-    # Create cursor
-    cur = mysql.connection.cursor()
-
-    # Get article by id
-    result = cur.execute("SELECT * FROM hubs WHERE id = %s", [id])
-
-    hub = cur.fetchone()
-    cur.close()
-    # Get form
-    form = ArticleForm(request.form)
-
-    # Populate article form fields
-    form.address.data = hub['address']
-    form.count.data = hub['swtich_count']
-
+def add_hub():
+    form = SwitchForm(request.form)
     if request.method == 'POST' and form.validate():
-        address = request.form['address']
-        count = request.form['switch_count']
+        address = form.address.data
+        count = form.count.data
 
         # Create Cursor
         cur = mysql.connection.cursor()
-        #app.logger.info(address)
+
         # Execute
-        cur.execute ("UPDATE articles SET address=%s, switch_count=%s WHERE id=%s",(address, count, id))
+        cur.execute("INSERT INTO hubs(address, switch_num) VALUES(%s, %s)",(address, count))
+
         # Commit to DB
         mysql.connection.commit()
 
         #Close connection
         cur.close()
 
-        flash('Article Updated', 'success')
+        flash('Switch Created', 'success')
 
         return redirect(url_for('dashboard'))
 
-    return render_template('edit_article.html', form=form)
+    return render_template('add_hub.html', form=form)
 
-# Delete Article
-@app.route('/delete_article/<string:id>', methods=['POST'])
+
+# Edit Switch
+@app.route('/edit_switch/<string:id>', methods=['GET', 'POST'])
 @is_logged_in
-def delete_article(id):
+def edit_switch(id):
+    # Create cursor
+    cur = mysql.connection.cursor()
+
+    # Get switch by id
+    result = cur.execute("SELECT * FROM hubs WHERE id = %s", [id])
+
+    hub = cur.fetchone()
+    cur.close()
+    # Get form
+    form = SwitchForm(request.form)
+
+    # Populate switch form fields
+    form.address.data = hub['address']
+    form.count.data = hub['switch_num']
+
+    if request.method == 'POST' and form.validate():
+        address = request.form['address']
+        count = request.form['switch_num']
+
+        # Create Cursor
+        cur = mysql.connection.cursor()
+        #app.logger.info(address)
+        # Execute
+        cur.execute ("UPDATE hubs SET address=%s, switch_num=%s WHERE id=%s",(address, count, id))
+        # Commit to DB
+        mysql.connection.commit()
+
+        #Close connection
+        cur.close()
+
+        flash('Switch Updated', 'success')
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('edit_switch.html', form=form)
+
+# Delete Switch
+@app.route('/delete_switch/<string:id>', methods=['POST'])
+@is_logged_in
+def delete_switch(id):
     # Create cursor
     cur = mysql.connection.cursor()
 
@@ -251,7 +266,7 @@ def delete_article(id):
     #Close connection
     cur.close()
 
-    flash('Article Deleted', 'success')
+    flash('Switch Deleted', 'success')
 
     return redirect(url_for('dashboard'))
 
