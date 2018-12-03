@@ -317,3 +317,6 @@ Requesting Switch at LT1 to Thrown (Output Off).
 [E7 0E 7B 04 70 7F 74 06 76 1D 70 33 44 78]  Response Fast Clock is  Running, rate is 4:1. Day 29, 14:49. Last set by ID 0x44 0x33 (8755).
 	Master supports LocoNet 1.1; Track Status: Off/Running; Programming Track Status: Available.
 [A0 0F 00 50]  Set speed of loco in slot 15 to 0.
+
+[B0 00 10 5F]  Requesting Switch at LT1 to Thrown (Output On).
+[B0 01 30 7E]  Requesting Switch at LT2 to Closed (Output On).
