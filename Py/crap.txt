@@ -1,0 +1,33 @@
+[BC 00 00 43]  Request status of switch LT1 ().
+[B4 3C 50 27]  LONG_ACK: Command station response to switch state request 0x50 (Thrown).
+[B0 00 10 5F]  Requesting Switch at LT1 to Thrown (Output On).
+[B0 00 00 4F]  Requesting Switch at LT1 to Thrown (Output Off).
+[A0 0F 00 50]  Set speed of loco in slot 15 to 0.
+[BC 01 00 42]  Request status of switch LT2 ().
+[B4 3C 50 27]  LONG_ACK: Command station response to switch state request 0x50 (Thrown).
+[BC 15 00 56]  Request status of switch LT22 ().
+[B4 3C 00 77]  LONG_ACK: Command station response to switch state request 0x00 (Thrown).
+[BC 5D 01 1F]  Request status of switch LT222 ().
+[B4 3C 00 77]  LONG_ACK: Command station response to switch state request 0x00 (Thrown).
+[BC 66 07 22]  Request status of switch LT999 ().
+[B4 3C 00 77]  LONG_ACK: Command station response to switch state request 0x00 (Thrown).
+[BC 01 00 42]  Request status of switch LT2 ().
+[B4 3C 50 27]  LONG_ACK: Command station response to switch state request 0x50 (Thrown).
+[BC 15 00 56]  Request status of switch LT22 ().
+[B4 3C 00 77]  LONG_ACK: Command station response to switch state request 0x00 (Thrown).
+[BC 5D 01 1F]  Request status of switch LT222 ().
+[B4 3C 00 77]  LONG_ACK: Command station response to switch state request 0x00 (Thrown).
+[BC 66 07 22]  Request status of switch LT999 ().
+[B4 3C 00 77]  LONG_ACK: Command station response to switch state request 0x00 (Thrown).
+[BC 01 00 42]  Request status of switch LT2 ().
+[B4 3C 50 27]  LONG_ACK: Command station response to switch state request 0x50 (Thrown).
+[B0 01 30 7E]  Requesting Switch at LT2 to Closed (Output On).
+[B0 01 20 6E]  Requesting Switch at LT2 to Closed (Output Off).
+[BC 00 20 63]  Request status of switch LT1 ().
+[B4 3C 50 27]  LONG_ACK: Command station response to switch state request 0x50 (Thrown).
+[B0 00 30 7F]  Requesting Switch at LT1 to Closed (Output On).
+[B0 00 20 6F]  Requesting Switch at LT1 to Closed (Output Off).
+
+[B0 00 30 7F]  Requesting Switch at LT1 to Closed (Output On).
+[B0 00 10 7F]  Requesting Switch at LT1 to Closed (Output On).
+[B0 00 30 7F]  Requesting Switch at LT1 to Closed (Output On).

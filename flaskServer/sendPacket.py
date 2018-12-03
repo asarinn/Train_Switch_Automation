@@ -47,8 +47,8 @@ def send_packet(address, data):
     packet = frame_gen()
     
     # Print packet
-    for x in range(0, 19):
-        print("%5X"% (packet[x]))
+    #for x in range(0, 19):
+    #    print("%5X"% (packet[x]))
 
     # Setup serial port
     ser = serial.Serial(

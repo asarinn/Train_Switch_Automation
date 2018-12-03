@@ -277,9 +277,11 @@ def switch_in(address, switch_num):
     addressList = bytes.fromhex(address)
 
     # make data
-    switch_num = switch_num - 1
+    #switch_num = switch_num - 1
+    print(switch_num)
     newVal = switch_num << 1
     dataSend = 1 + newVal
+    print(dataSend, newVal, switch_num)
     print (address, dataSend, sep='<-')
 
     send_packet(addressList, dataSend)
@@ -293,9 +295,11 @@ def switch_out(address, switch_num):
     addressList = bytes.fromhex(address)
 
     # make data
-    switch_num = switch_num - 1
+    #switch_num = switch_num - 1
+    print(switch_num)
     newVal = switch_num << 1
     dataSend = 0 + newVal
+    print(dataSend, newVal, switch_num, sep=' ')
     print(address, dataSend, sep='<-')
 
     send_packet(addressList, dataSend)
