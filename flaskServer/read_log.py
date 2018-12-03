@@ -5,22 +5,19 @@ def switch_in(address, switch_num):
     addressList = bytes.fromhex(address)
 
     # make data
-    switch_num = switch_num - 1
-    newVal = switch_num << 1
-    dataSend = 1 + newVal
-    print (address, dataSend, sep='<-')
+    shifted_val = switch_num << 1
+    packet_data = 1 + shifted_val
+    print (address, packet_data, sep='<-')
+    send_packet(addressList, packet_data)
 
-    send_packet(addressList, dataSend)
 def switch_out(address, switch_num):
     addressList = bytes.fromhex(address)
 
     # make data
-    switch_num = switch_num - 1
-    newVal = switch_num << 1
-    dataSend = 0 + newVal
-    print(address, dataSend, sep='<-')
-
-    send_packet(addressList, dataSend)
+    shifted_val = switch_num << 1
+    packet_data = 0 + shifted_val
+    print(address, packet_data, sep='<-') # Print what is being sent where
+    send_packet(addressList, packet_data)
 
 def follow(thefile):
     thefile.seek(0,2)
@@ -36,14 +33,14 @@ def follow(thefile):
             if(line[7:9] == '10'):
                 #switch thrown
                 switch_out('0013A2004182F32D', int(line[4:6]))
-                print('switch in')
+                print('switch thrown')
             elif(line[7:9] == '30'):
                 #switch closed
                 switch_in('0013A2004182F32D', int(line[4:6]))
-                print('switch out')
+                print('switch closed')
 
 if __name__ == '__main__':
-    logfile = open("Py\MonitorLog.txt", "r")
-    loglines = follow(logfile)
-    for line in loglines:
-        print (line)
+    logfile = open("Py/MonitorLog.txt", "r")
+    #loglines = follow(logfile)
+    #for line in loglines:
+    #    print (line)
