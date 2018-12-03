@@ -8,7 +8,7 @@ def switch_in(address, switch_num):
     shifted_val = switch_num << 1
     packet_data = 1 + shifted_val
     print (address, packet_data, sep='<-')
-    #send_packet(addressList, packet_data)
+    send_packet(addressList, packet_data)
 
 def switch_out(address, switch_num):
     addressList = bytes.fromhex(address)
@@ -17,7 +17,7 @@ def switch_out(address, switch_num):
     shifted_val = switch_num << 1
     packet_data = 0 + shifted_val
     print(address, packet_data, sep='<-') # Print what is being sent where
-    #send_packet(addressList, packet_data)
+    send_packet(addressList, packet_data)
 
 def follow(thefile):
     thefile.seek(0,2)
