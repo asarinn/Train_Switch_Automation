@@ -1,6 +1,6 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
 from flask_mysqldb import MySQL
-from wtforms import Form, StringField, TextAreaField, PasswordField, validators
+from wtforms import Form, StringField, IntegerField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from functools import wraps
 from sendPacket import send_packet
@@ -131,13 +131,13 @@ def logout():
 def dashboard():
     # Create cursor
     cur = mysql.connection.cursor()
-    hubCur = mysql.connection.cursor()
+    switchCur = mysql.connection.cursor()
 
-    # Show switches only from the user logged in 
-    result2 = hubCur.execute("SELECT * FROM hubs")
-    hubs = hubCur.fetchall()
+    # Show all switches
+    result = switchCur.execute("SELECT * FROM hubs")
+    hubs = switchCur.fetchall()
 
-    if result2 > 0:
+    if result > 0:
         return render_template('dashboard.html', hubs=hubs)
     else:
         msg = 'No Switches Found'
@@ -148,7 +148,7 @@ def dashboard():
 # Switch Form Class
 class SwitchForm(Form):
     address = StringField('Address', [validators.Length(min=16, max=16)])
-    count = StringField('Switch Number', [validators.Length(min=1, max=2)])
+    count = IntegerField('Switch Number', [validators.NumberRange(min=0, max=2)]) # validator is buggy
 
 # Hub form class
 class HubForm(Form):
@@ -182,7 +182,7 @@ def add_switch():
 
     return render_template('add_switch.html', form=form)
 
-# Add Hub
+# Add Hub (Does not work currently)
 @app.route('/add_hub', methods=['GET', 'POST'])
 @is_logged_in
 def add_hub():
@@ -209,7 +209,6 @@ def add_hub():
 
     return render_template('add_hub.html', form=form)
 
-
 # Edit Switch
 @app.route('/edit_switch/<string:id>', methods=['GET', 'POST'])
 @is_logged_in
@@ -220,18 +219,18 @@ def edit_switch(id):
     # Get switch by id
     result = cur.execute("SELECT * FROM hubs WHERE id = %s", [id])
 
-    hub = cur.fetchone()
+    switch = cur.fetchone()
     cur.close()
     # Get form
     form = SwitchForm(request.form)
 
     # Populate switch form fields
-    form.address.data = hub['address']
-    form.count.data = hub['switch_num']
+    form.address.data = switch['address']
+    form.count.data = switch['switch_num']
 
     if request.method == 'POST' and form.validate():
         address = request.form['address']
-        count = request.form['switch_num']
+        count = request.form['count']
 
         # Create Cursor
         cur = mysql.connection.cursor()
@@ -274,14 +273,11 @@ def delete_switch(id):
 @app.route('/switch_in/<string:address>/<int:switch_num>', methods=['POST'])
 @is_logged_in
 def switch_in(address, switch_num):
-    addressList = bytes.fromhex(address)
 
-    # make data
-    #switch_num = switch_num - 1
-    print(switch_num)
-    newVal = switch_num << 1
-    dataSend = 1 + newVal
-    print(dataSend, newVal, switch_num)
+    # Generate data and address
+    addressList = bytes.fromhex(address) # Convert hex string to list of bytes
+    newVal = switch_num << 1 # Bit shift left 1
+    dataSend = 1 + newVal # Adding 1 is switch in
     print (address, dataSend, sep='<-')
 
     send_packet(addressList, dataSend)
@@ -292,14 +288,11 @@ def switch_in(address, switch_num):
 @app.route('/switch_out/<string:address>/<int:switch_num>', methods=['POST'])
 @is_logged_in
 def switch_out(address, switch_num):
-    addressList = bytes.fromhex(address)
 
-    # make data
-    #switch_num = switch_num - 1
-    print(switch_num)
-    newVal = switch_num << 1
-    dataSend = 0 + newVal
-    print(dataSend, newVal, switch_num, sep=' ')
+    # Generate data and address
+    addressList = bytes.fromhex(address) # Convert hex string to list of bytes
+    newVal = switch_num << 1 # Bit shift left 1
+    dataSend = 0 + newVal # Adding 0 is switch out
     print(address, dataSend, sep='<-')
 
     send_packet(addressList, dataSend)

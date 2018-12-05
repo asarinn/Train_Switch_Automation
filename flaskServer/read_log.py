@@ -4,7 +4,7 @@ from sendPacket import send_packet
 def switch_in(address, switch_num):
     addressList = bytes.fromhex(address)
 
-    # make data
+    # Make data
     shifted_val = switch_num << 1
     packet_data = 1 + shifted_val
     print (address, packet_data, sep='<-')
@@ -19,6 +19,7 @@ def switch_out(address, switch_num):
     print(address, packet_data, sep='<-') # Print what is being sent where
     send_packet(addressList, packet_data)
 
+# Gets every new line written to the file
 def follow(thefile):
     thefile.seek(0,2)
     while True:
