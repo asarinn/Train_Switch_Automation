@@ -232,15 +232,10 @@ def edit_switch(id):
         address = request.form['address']
         count = request.form['count']
 
-        # Create Cursor
-        cur = mysql.connection.cursor()
-        #app.logger.info(address)
-        # Execute
-        cur.execute ("UPDATE hubs SET address=%s, switch_num=%s WHERE id=%s",(address, count, id))
-        # Commit to DB
-        mysql.connection.commit()
-
-        #Close connection
+        # MySQL commands
+        cur = mysql.connection.cursor() # Create cursor
+        cur.execute ("UPDATE hubs SET address=%s, switch_num=%s WHERE id=%s",(address, count, id)) # Execute
+        mysql.connection.commit() # Commit
         cur.close()
 
         flash('Switch Updated', 'success')
