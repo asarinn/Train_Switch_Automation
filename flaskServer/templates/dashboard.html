@@ -31,12 +31,12 @@
         </td>
         <td>
           <form action="{{url_for('switch_in', address=hub.address, switch_num=hub.switch_num)}}" method="post">
-            <input type="button" value="In" class="btn btn-primary">
+            <input type="submit" value="In" class="btn btn-primary">
           </form>
         </td>
         <td>
           <form action="{{url_for('switch_out', address=hub.address, switch_num=hub.switch_num)}}" method="post">
-            <input type="button" value="Out" class="btn btn-primary">
+            <input type="submit" value="Out" class="btn btn-primary">
           </form>
         </td>
       </tr>
