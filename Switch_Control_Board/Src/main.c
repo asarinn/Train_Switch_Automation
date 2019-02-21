@@ -146,9 +146,9 @@ int main(void)
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); //start timer1, channel 1
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2); //start timer1, channel 2
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3); //start timer1, channel 3
-  TIM1->CCR1 = 1800;
-  TIM1->CCR2 = 1800;
-  TIM1->CCR3 = 1800;
+  //TIM1->CCR1 = 1800;
+  //TIM1->CCR2 = 1800;
+  //TIM1->CCR3 = 1800;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -161,8 +161,9 @@ int main(void)
       
       
       
-    while(HAL_UART_Receive(&huart3,&data, 1, HAL_MAX_DELAY) != HAL_OK){}
-    HAL_UART_Transmit(&huart2, &data, 1, HAL_MAX_DELAY);        
+    while(HAL_UART_Receive(&huart2,&data, 1, HAL_MAX_DELAY) != HAL_OK){}
+    //HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_SET);    //test LED PA9
+    //HAL_UART_Transmit(&huart2, &data, 1, HAL_MAX_DELAY);  //UART test code for dev board      
     if((data == 0x7E) && !packet_started)
     {
       packet[0] = data;
@@ -183,14 +184,7 @@ int main(void)
           if(packet[3] == 0x90)
           {
             // Packet complete
-            if(packet[15] == 0x01)
-            {
-                HAL_GPIO_WritePin(GPIOA, LED1_Pin, GPIO_PIN_SET);
-            }
-            else
-            {
-                HAL_GPIO_WritePin(GPIOA, LED1_Pin, GPIO_PIN_RESET);
-            }
+                run_switch(packet[15]);
           }
 
           // Reset all counters
@@ -301,14 +295,12 @@ static void MX_TIM1_Init(void)
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  sConfigOC.Pulse = 1000;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
 
-  sConfigOC.Pulse = 0;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
@@ -441,7 +433,7 @@ static void MX_USART2_UART_Init(void)
 {
 
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 9600;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
